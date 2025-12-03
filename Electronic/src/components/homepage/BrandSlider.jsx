@@ -29,7 +29,7 @@ const BRANDS = [
 
 const BrandSlider = () => {
   return (
-    <section className="bg-gray-950 py-8 sm:py-10">
+    <section id="BrandSlider" className="bg-gray-950 py-8 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <h2 className="text-lg sm:text-xl font-semibold text-white">

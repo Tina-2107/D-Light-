@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import ProductsGrid from "../products/ProductGrid";
+import { useCart } from "../../context/useCart";
 const FEATURED_PRODUCTS = [
   {
     name: "Havells Gracia Alkaline Water Purifier",
@@ -34,9 +37,12 @@ const FEATURED_PRODUCTS = [
   },
 ];
 
-const currency = (value) => `₹${value.toLocaleString("en-IN")}`;
+// helper removed: prices are passed through product objects directly and
+// rendered by the ProductsGrid component's layout
 
 const FeaturedProducts = () => {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
   return (
     <section id="featured" className="bg-gray-900 py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,54 +50,28 @@ const FeaturedProducts = () => {
           <h2 className="text-xl sm:text-2xl font-semibold text-white">
             Featured Products
           </h2>
-          <a
-            href="#"
-            className="text-sm sm:text-base text-yellow-400 hover:text-yellow-300"
+          <button
+            onClick={() => navigate("/products")}
+            className="text-sm text-yellow-400 hover:text-yellow-300"
           >
             View all
-          </a>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {FEATURED_PRODUCTS.map((product) => (
-            <div
-              key={product.name}
-              className="group bg-gray-950 border border-gray-800 rounded-2xl p-4 sm:p-5 flex flex-col hover:border-yellow-400/70 hover:-translate-y-1 transition-all"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <span className="text-[11px] px-2 py-1 rounded-full bg-yellow-400/15 text-yellow-300 uppercase tracking-wide">
-                  {product.badge}
-                </span>
-                <span className="text-[11px] text-gray-400">In Stock</span>
-              </div>
-
-              <div className="h-28 sm:h-32 mb-4 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 text-xs">
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
-
-              <h3 className="text-sm sm:text-base font-semibold text-white mb-2 line-clamp-2">
-                {product.name}
-              </h3>
-
-              <div className="mt-auto">
-                <div className="flex items-baseline space-x-2 mb-3">
-                  <span className="text-lg sm:text-xl font-bold text-yellow-400">
-                    {currency(product.price)}
-                  </span>
-                  <span className="text-xs sm:text-sm text-gray-500 line-through">
-                    {currency(product.mrp)}
-                  </span>
-                </div>
-                <button className="w-full py-2.5 rounded-xl bg-yellow-400 text-gray-900 text-sm font-semibold hover:bg-yellow-300 transition-colors">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="mt-4">
+          <ProductsGrid
+            products={FEATURED_PRODUCTS.map((p, i) => ({
+              id: `featured-${i}`,
+              image: p.img,
+              name: p.name,
+              price: p.price,
+              mrp: p.mrp,
+              badge: p.badge,
+              brand: p.brand || "",
+            }))}
+            onAddToCart={(prod) => addToCart(prod, 1)}
+            /* allow ProductsGrid to manage wishlist via context */
+          />
         </div>
       </div>
     </section>

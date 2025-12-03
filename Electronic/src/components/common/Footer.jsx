@@ -1,5 +1,6 @@
 // Footer.jsx - Fully Responsive
 import { Disclosure } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const Footer = () => {
@@ -55,36 +56,36 @@ const Footer = () => {
               <ChevronDownIcon className="ml-2 h-5 w-5 group-data-[open]:rotate-180 transition-transform" />
             </Disclosure.Button>
             <Disclosure.Panel className="space-y-2 text-sm sm:text-base text-gray-300 pl-0 sm:pl-4">
-              <a
-                href="#"
+              <Link
+                to="/#"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 About Us
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#contact"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Contact Us
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Privacy Policy
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Terms & Conditions
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Shipping Policy
-              </a>
+              </Link>
             </Disclosure.Panel>
           </Disclosure>
 
@@ -95,42 +96,42 @@ const Footer = () => {
               <ChevronDownIcon className="ml-2 h-5 w-5 group-data-[open]:rotate-180 transition-transform" />
             </Disclosure.Button>
             <Disclosure.Panel className="space-y-1 text-sm sm:text-base text-gray-300 pl-0 sm:pl-4">
-              <a
-                href="#"
+              <Link
+                to="/#categories"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Fans (250+)
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#categories"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Lighting (538+)
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#categories"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Switches (760+)
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#categories"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Cables (154+)
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/#categories"
                 className="hover:text-yellow-400 transition-colors block py-1"
               >
                 Appliances
-              </a>{" "}
+              </Link>
               [attached_file:1]
             </Disclosure.Panel>
           </Disclosure>
 
           {/* Contact */}
-          <div>
+          <div id="contact">
             <h3 className="text-lg sm:text-xl font-semibold mb-6 text-yellow-400">
               Contact Info
             </h3>
@@ -140,13 +141,7 @@ const Footer = () => {
                   className="w-5 h-5 mt-1 mr-3 text-yellow-400 flex-shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                ></svg>
                 <div>
                   <p>India</p>
                   <p className="text-xs sm:text-sm text-gray-400">
@@ -196,15 +191,15 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm sm:text-base text-gray-400 space-y-4 sm:space-y-0 sm:space-x-8">
             <p>© {currentYear} D-Light. All rights reserved.</p>
             <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-end">
-              <a href="#" className="hover:text-yellow-400 transition-colors">
+              <Link to="/#" className="hover:text-yellow-400 transition-colors">
                 Payment Methods
-              </a>
-              <a href="#" className="hover:text-yellow-400 transition-colors">
+              </Link>
+              <Link to="/#" className="hover:text-yellow-400 transition-colors">
                 Secure Shopping
-              </a>
-              <a href="#" className="hover:text-yellow-400 transition-colors">
+              </Link>
+              <Link to="/#" className="hover:text-yellow-400 transition-colors">
                 100% Genuine
-              </a>
+              </Link>
             </div>
           </div>
         </div>
