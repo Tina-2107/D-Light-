@@ -1,7 +1,10 @@
 import Logo from "../../assets/images/LOGO.png";
 import { Link } from "react-router-dom";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/config";
+import { useAuth } from "../../context/AuthContext";
 
 const SignupPage = () => {
   const [form, setForm] = useState({
@@ -11,7 +14,21 @@ const SignupPage = () => {
     password: "",
     confirmPassword: "",
     newsletter: true,
+    role: "customer",
   });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const [passwordError, setPasswordError] = useState(""); // ✅ Password match error state
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
@@ -21,9 +38,30 @@ const SignupPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: call your API here
+    setLoading(true);
+    setError("");
+    // Final validation check
+    if (form.password !== form.confirmPassword) {
+      setPasswordError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, form.email, form.password);
+      // Additional user profile updates and navigation
+    } catch (err) {
+      if (err.code === "auth/email-already-in-use") {
+        setError("This email is already registered. Please log in instead.");
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+
     console.log("Signup data:", form);
   };
 
@@ -89,6 +127,11 @@ const SignupPage = () => {
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
+            {error && (
+              <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-xl text-red-300">
+                {error}
+              </div>
+            )}
             {/* Full Name + Phone (stack on mobile, 2‑col on tablet+) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -195,6 +238,23 @@ const SignupPage = () => {
                   className="w-full rounded-xl bg-gray-800/80 border border-gray-700/80 px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400/70 focus:border-transparent"
                   placeholder="Re‑enter password"
                 />
+                {/* ✅ INLINE ALERT */}
+                {passwordError && (
+                  <p className="mt-1 text-xs text-red-400 flex items-center gap-1">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {passwordError}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -233,9 +293,10 @@ const SignupPage = () => {
             {/* Submit button */}
             <button
               type="submit"
+              disabled={loading}
               className="mt-2 w-full rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 py-2.5 text-sm md:text-base font-semibold text-gray-900 shadow-lg shadow-yellow-500/30 hover:from-yellow-300 hover:to-yellow-400 transition-colors"
             >
-              Create Account
+              {loading ? "Creating Account..." : "Sign Up"}
             </button>
 
             {/* Login link */}

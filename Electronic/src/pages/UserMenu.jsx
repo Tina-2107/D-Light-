@@ -1,14 +1,17 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const UserMenu = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // from auth context
-  const [user, _] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-  }); // from auth context
+  const { user, logout } = useAuth();
+
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   const handleLogin = () => {
     navigate("/login");
@@ -20,11 +23,6 @@ const UserMenu = () => {
 
   const handleProfile = () => {
     navigate("/profile");
-  };
-
-  const handleLogout = () => {
-    // clear auth token/context
-    setIsAuthenticated(false);
   };
 
   return (
@@ -50,11 +48,11 @@ const UserMenu = () => {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-700/50 bg-gray-900/95 border border-gray-700/50 rounded-2xl shadow-2xl backdrop-blur-md z-50">
           {/* Authenticated User */}
-          {isAuthenticated ? (
+          {user ? (
             <>
               <div className="px-4 py-3">
                 <p className="text-sm font-semibold text-white truncate">
-                  {user.name}
+                  {user.displayName || user.email?.split("@")[0] || "User"}
                 </p>
                 <p className="text-xs text-gray-400 truncate">{user.email}</p>
               </div>
